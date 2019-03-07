@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/home/hpan/.pyenv/versions/3.6.8/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train</folder>
+	<filename>012.png</filename>
+	<path>D:\Github\brawlstars-ai\object_detection\img\train\012.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1280</width>
+		<height>800</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>current_player</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>969</xmin>
+			<ymin>345</ymin>
+			<xmax>1054</xmax>
+			<ymax>416</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,2 +1,17 @@
 *.pyc
 __pycache__\
+**/log
+**/data
+**/models
+**/ssd_mobilenet*
+**/training
+**/training_bk
+
+**/saved_model
+
+*.pbtxt
+checkpoint
+*.pb
+*.meta
+*.index
+

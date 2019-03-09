@@ -13,6 +13,8 @@ W = 0x11
 A = 0x1E
 S = 0x1F
 D = 0x20
+Q = 0X10
+E = 0X12
 
 # C struct redefinitions 
 PUL = ctypes.POINTER(ctypes.c_ulong)
@@ -61,7 +63,12 @@ def ReleaseKey(hexKeyCode):
     x = Input( ctypes.c_ulong(1), ii_ )
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
+
 # if __name__ == '__main__':
+#     for i in range(5):
+#         print(i)
+#         import time
+#         time.sleep(0.3)
 #     PressKey(0x11)
 #     time.sleep(1)
 #     ReleaseKey(0x11)

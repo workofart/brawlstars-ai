@@ -1,11 +1,14 @@
 *.pyc
 __pycache__\
+**/brawlstars_ai.egg-info
 **/log
 **/data
 **/models
 **/ssd_mobilenet*
 **/training
 **/training_bk
+**/build
+**/dist
 
 **/saved_model
 

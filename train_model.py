@@ -9,7 +9,7 @@ MODEL_NAME = 'brawlstars-bounty-attack-{}-{}-{}-epochs.model'.format(LR, 'alexne
 LOAD_MODEL_NAME = 'brawlstars-bounty-attack-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2',15)
 
 model = alexnet(WIDTH, HEIGHT, LR, EPOCHS)
-model.load(LOAD_MODEL_NAME)
+# model.load(LOAD_MODEL_NAME)
 train_data = np.load('data/training_data_bounty_attack.npy')
 
 train = train_data[:-500]

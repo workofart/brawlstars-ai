@@ -38,9 +38,14 @@ jupyter notebook
 Because `player_detection.py` relies on the `utils` modules inside of `models/research/object_detection`, it needs to be copied into that folder. Also, `grabscreen.py` will need to be copied over too.
 
 ### 7. Record Supervised Learning Data
+In the $REPO folder, run the following and play the game. Usually 100K+ data points is decent for training.
+```
+"D:/Program Files/Anaconda3/envs/py-35/python.exe" ./create_training_data.py
+```
 
 
 ### 8. Supervised Learning Training
+Run from the $REPO folder, and keep the epochs to between 5-15.
 ```
 "D:/Program Files/Anaconda3/envs/py-35/python.exe" ./train_model.py
 ```
@@ -63,7 +68,18 @@ config.gpu_options.per_process_gpu_memory_fraction = 0.7
 session = tf.Session(config=config)
 ```
 
-Check memory of a particular application
+### Check memory of a particular application
 ```
 cuda-memcheck ./yourApp
 ```
+
+### Accessing Private Repos in the cloud while the SSH keys are changing everytime the instance is restarted
+Put the following into `~/.ssh/config`
+```
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa
+```
+
+Copy over the private SSH key into `~/.ssh/{PRIVATE_KEY}`

@@ -86,4 +86,8 @@ Host github.com
 Copy over the private SSH key into `~/.ssh/{PRIVATE_KEY}`
 
 
-### Tensorflow 1.13 cannot work with Cuda 10.1, use 10.0 instead
+## Issues on the cloud Ubuntu 18.04 Server
+- Tensorflow 1.13 cannot work with Cuda 10.1, use 10.0 instead
+- Install python-setuptools, or else can't use `setup.py`
+- If you use `easy_setup`, in other words, the `python-setuptools` above, you will need to specify the python version by using `python3` for 3+ because `python` by default will make the setup install everything in python 2.7
+- You will need to do `python setup.py build` first, then `python setup.py install` after, which will install everything into the libs folder in `pyenv/version/3.6.8/libs/python3.6.8/site-packages`

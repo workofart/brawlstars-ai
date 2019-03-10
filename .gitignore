@@ -9,8 +9,9 @@ __pycache__\
 **/training_bk
 **/build
 **/dist
-
 **/saved_model
+
+archive/
 
 *.pbtxt
 checkpoint

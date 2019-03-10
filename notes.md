@@ -26,7 +26,7 @@ Run in $REPO/object_detection
 
 ### 4. Generate Inference Graph
 ```
-& "D:/Program Files/Anaconda3/envs/py-35/python.exe" "D:\Github\temp\models\research\object_detection\export_inference_graph.py" --input_type image_tensor --pipeline_config_path ssd_mobilenet.config --trained_checkpoint_prefix training/model.ckpt-18288 --output_directory current_player_inference_graph
+& "D:/Program Files/Anaconda3/envs/tf-gpu/python.exe" "D:\Github\temp\models\research\object_detection\export_inference_graph.py" --input_type image_tensor --pipeline_config_path ssd_mobilenet.config --trained_checkpoint_prefix training/model.ckpt-20000 --output_directory name_inference_graph
 ```
 ### 5. Run the Jupyter Notebook for test image classification
 Run in $REPO/object_detection
@@ -56,7 +56,6 @@ sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 ### Anaconda Env Activation
 activation involves more than simply setting PATH and we currently do not support running activate directly from PowerShell (it is on our list of things to fix). You need to use the Anaconda Prompt or, if you want to use PowerShell, run `cmd "/K" C:\ProgramData\Anaconda3\Scripts\activate.bat C:\ProgramData\Anaconda3` directly
 
-
 ### Dimensions for BBox
 0,30,1280,745
 
@@ -72,6 +71,8 @@ session = tf.Session(config=config)
 ```
 cuda-memcheck ./yourApp
 ```
+### Keyboard Scancodes
+[Link](http://www.ee.bgu.ac.il/~microlab/MicroLab/Labs/ScanCodes.htm)
 
 ### Accessing Private Repos in the cloud while the SSH keys are changing everytime the instance is restarted
 Put the following into `~/.ssh/config`
@@ -83,3 +84,6 @@ Host github.com
 ```
 
 Copy over the private SSH key into `~/.ssh/{PRIVATE_KEY}`
+
+
+### Tensorflow 1.13 cannot work with Cuda 10.1, use 10.0 instead

@@ -28,7 +28,7 @@ def keys_to_output(keys):
         output[5] = 1
     return output
 
-file_name = 'data/training_data_bounty_attack.npy'
+file_name = 'data/training_data_bounty_attack_mobilenet.npy'
 
 if os.path.isfile(file_name):
     print('File exists, loading previous data!')
@@ -47,9 +47,9 @@ def main():
         # 800x600 windowed mode
         screen = grab_screen(region=(0,30,1280,745))
         last_time = time.time()
-        screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+        # screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         # resize to something a bit more acceptable for a CNN
-        screen = cv2.resize(screen, (80,60))
+        screen = cv2.resize(screen, (224,224))
         keys = key_check()
         output = keys_to_output(keys)
         training_data.append([screen,output])

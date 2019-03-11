@@ -9,7 +9,7 @@ from getkeys import key_check
 WIDTH = 80
 HEIGHT = 60
 LR = 1e-3
-EPOCHS = 7
+EPOCHS = 20
 MODEL_NAME = 'brawlstars-bounty-attack-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2', EPOCHS)
 
 model = alexnet(WIDTH, HEIGHT, LR, EPOCHS)
@@ -70,7 +70,7 @@ def main():
             action_probs = model.predict([screen.reshape(80,60,1)])[0]
             # To prevent very low probs from taking over
             # and going into infinite loop
-            print(max(action_probs))
+            # print(max(action_probs))
             if max(action_probs) > 0.3:
                 
                 moves = list(np.around(action_probs))

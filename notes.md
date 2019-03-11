@@ -85,6 +85,26 @@ Host github.com
 
 Copy over the private SSH key into `~/.ssh/{PRIVATE_KEY}`
 
+## Fine Tuning Existing models (Mobilenet as E.g.)
+If you get "Expected 3 dimensions but got array with shape (BATCH_SIZE, NUM_CLASSES)"
+
+**Before:**
+The last softmax layer looks like this:
+```
+dense_1 (Dense)                 (None, 7, 7, 6)
+```
+
+
+The problem is that you start with a three dimensional layer but never reduce the dimensionality in any of the following layers.
+Try adding mode.add(Flatten()) before the last Dense layer
+
+**After:**
+```
+dense_1 (Dense)                 (None, 6)
+```
+
+## Try to setup an environment for reinforcement learning
+Refer to: https://github.com/ChintanTrivedi/DeepGamingAI_FIFARL
 
 ## Issues on the cloud Ubuntu 18.04 Server
 - Tensorflow 1.13 cannot work with Cuda 10.1, use 10.0 instead

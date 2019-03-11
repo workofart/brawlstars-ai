@@ -32,12 +32,12 @@ def example():
         plt.suptitle(meth)
         plt.show()
 
-def match(orig_image, template):
+def match(img, template):
     template = cv.Canny(template, threshold1 = 300, threshold2=500)
     # cv.imshow("Template", template)
     h, w = [template.shape[0], template.shape[1]]
     method = cv.TM_CCORR
-    img = orig_image.copy()
+    # img = orig_image.copy()
     
     # Apply template Matching
     res = cv.matchTemplate(img,template,method)
@@ -53,5 +53,7 @@ def match(orig_image, template):
     # for pt in zip(*loc[::-1]):
     #     cv.rectangle(img, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
     # return img
-    return cv.rectangle(img,top_left, bottom_right, 255, 2)
+
+    cv.rectangle(img,top_left, bottom_right, 255, 2)
+    return top_left, bottom_right
 

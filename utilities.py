@@ -51,17 +51,6 @@ def countdown(t):
         print(i+1)
         time.sleep(1)
 
-def preprocess(data, length, WIDTH, HEIGHT):
-    train = data[:-length]
-    test = data[-length:]
-
-    X = np.array([i[0] for i in train]).reshape(-1,WIDTH,HEIGHT,1)
-    Y = [i[1] for i in train]
-
-    test_x = np.array([i[0] for i in test]).reshape(-1,WIDTH,HEIGHT,1)
-    test_y = [i[1] for i in test]
-
-    return X, Y, test_x, test_y
 
 def take_action(movement_index, action_index):
     # TODO: populate this with no movement and action

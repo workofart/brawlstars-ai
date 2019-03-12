@@ -5,7 +5,6 @@ from keras.optimizers import Adam
 from keras.models import load_model
 from alexnet import alexnet
 from mobilenet import mnet
-from utilities import preprocess
 from lstm import reshape_for_lstm, get_action_model, get_movement_model
 
 
@@ -16,6 +15,19 @@ EPOCHS = 500
 
 # train_data = np.load('data/training_data_bounty_attack_mobilenet.npy')
 train_data = np.load('data/converted.npy')
+
+def preprocess(data, length, WIDTH, HEIGHT):
+    train = data[:-length]
+    test = data[-length:]
+
+    X = np.array([i[0] for i in train]).reshape(-1,WIDTH,HEIGHT,1)
+    Y = [i[1] for i in train]
+
+    test_x = np.array([i[0] for i in test]).reshape(-1,WIDTH,HEIGHT,1)
+    test_y = [i[1] for i in test]
+
+    return X, Y, test_x, test_y
+    
 def train_alexnet():
     MODEL_NAME = 'models/brawlstars-bounty-attack-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2',EPOCHS)
     LOAD_MODEL_NAME = 'models/brawlstars-bounty-attack-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2',20)

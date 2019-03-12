@@ -14,3 +14,9 @@ def mnet():
     model = Model(inputs=net.input, outputs=predictions)
     return model
 
+def mnet_feature():
+    net = MobileNetV2()
+    x = net.layers[-5].output
+
+    model = Model(inputs=net.input, outputs=x)
+    return model

@@ -22,7 +22,7 @@ def keys_to_movement(keys):
 
     [A,W,D,S] boolean values.
     '''
-    output = [0,0,0,0]
+    output = [0,0,0,0,0]
     
     if 'A' in keys:
         output[0] = 1
@@ -33,8 +33,8 @@ def keys_to_movement(keys):
     elif 'W' in keys:
         output[1] = 1
     
-    # if len(keys):
-    #     output[4] = 1
+    if output == [0,0,0,0,0]:
+        output[4] = 1
     return output
 
 def keys_to_action(keys):
@@ -43,9 +43,12 @@ def keys_to_action(keys):
 
     [E,Q] boolean values.
     '''
-    output = [0,0]
+    output = [0,0,0]
     if 'E' in keys:
         output[0] = 1
     elif 'Q' in keys:
         output[1] = 1
+        
+    if output == [0,0,0]:
+        output[2] = 1
     return output

@@ -2,14 +2,14 @@ import numpy as np
 from PIL import ImageGrab
 import cv2
 import time, random
-from directkeys import PressKey,ReleaseKey, W, A, S, D, Q, E
-from alexnet import alexnet
-from mobilenet import mnet, mnet_feature
-from lstm import get_action_model, get_movement_model
-from utilities import countdown, take_action
+from utilities.directkeys import PressKey,ReleaseKey, W, A, S, D, Q, E
+from net.alexnet import alexnet
+from net.mobilenet import mnet, mnet_feature
+from net.lstm import get_action_model, get_movement_model
+from utilities.utilities import countdown, take_action
 from keras.models import load_model
 from keras.backend.tensorflow_backend import set_session
-from getkeys import key_check
+from utilities.getkeys import key_check
 import tensorflow as tf
 
 config = tf.ConfigProto()
@@ -126,7 +126,7 @@ def main_feature():
         if not paused:
             screen =  np.array(ImageGrab.grab(bbox=(0,30,1280,745)))
             last_time = time.time()
-            print(last_time - current_time)
+            # print(last_time - current_time)
             current_time = last_time
             screen = cv2.resize(screen, (224,224))
             features = model.predict([screen.reshape(1,224,224,3)])[0]
@@ -143,11 +143,7 @@ def main_feature():
 
             selected_movement = np.argmax(movements)
             selected_action = np.argmax(actions)
-            # if (actions < 0.3).all():
-            #     selected_action = 2 # no action
-            # if (movements < 0.3).all():
-            #     selected_movement = 4 # no movement
-            # print('Selected Action: {0}'.format(selected_action))
+            print('Selected Action: {0}'.format(selected_action))
             # print('Selected Movement: {0}'.format(selected_movement))
 
             take_action(selected_movement, selected_action)

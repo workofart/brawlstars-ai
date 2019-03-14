@@ -15,7 +15,7 @@ REQUIRES_PYTHON = '>=3.5.0'
 VERSION = '0.0.1'
 
 REQUIRED = [
-    'tensorflow', 'tflearn', 'numpy', 'opencv-python', 'pyautogui' , 'pillow', 'pandas'
+    'tensorflow', 'tflearn', 'numpy', 'opencv-python', 'pyautogui' , 'pillow', 'pandas', 'keras'
 ]
 
 

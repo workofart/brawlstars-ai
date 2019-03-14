@@ -5,8 +5,8 @@ import time
 import os
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
-from getkeys import key_check, keys_to_action, keys_to_movement
-from utilities import countdown
+from utilities.getkeys import key_check, keys_to_action, keys_to_movement
+from utilities.utilities import countdown
 from mobilenet import mnet_feature
 
 file_name = 'data/training_data_bounty_attack_mobilenet.npy'
@@ -52,13 +52,12 @@ def main_feature():
     # countdown(4)
     print('started')
     while(True):
-        # 800x600 windowed mode
         screen = grab_screen(region=(0,30,1280,745))
         last_time = time.time()
         screen = cv2.resize(screen, (224,224))
 
         # Feed the raw screen into MobileNet to get features
-        # The features are in the size of (None, 7, 7, 320)
+        # The features are in the size of the output layer Conv_1 (Conv2D) -> (None, 7, 7, 1280)
         features = model.predict([screen.reshape(1,224,224,3)])[0]
 
         keys = key_check()

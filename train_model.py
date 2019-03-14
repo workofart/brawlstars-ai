@@ -3,9 +3,9 @@ import os
 import tensorflow as tf
 from keras.optimizers import Adam
 from keras.models import load_model
-from alexnet import alexnet
-from mobilenet import mnet
-from lstm import reshape_for_lstm, get_action_model, get_movement_model
+from net.alexnet import alexnet
+from net.mobilenet import mnet
+from net.lstm import reshape_for_lstm, get_action_model, get_movement_model
 
 
 WIDTH = 80
@@ -13,8 +13,7 @@ HEIGHT = 60
 LR = 3e-5
 EPOCHS = 500
 
-# train_data = np.load('data/training_data_bounty_attack_mobilenet.npy')
-train_data = np.load('data/converted.npy')
+train_data = np.load('data/training_data_bounty_attack_mobilenet.npy')
 
 def preprocess(data, length, WIDTH, HEIGHT):
     train = data[:-length]
@@ -27,7 +26,7 @@ def preprocess(data, length, WIDTH, HEIGHT):
     test_y = [i[1] for i in test]
 
     return X, Y, test_x, test_y
-    
+
 def train_alexnet():
     MODEL_NAME = 'models/brawlstars-bounty-attack-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2',EPOCHS)
     LOAD_MODEL_NAME = 'models/brawlstars-bounty-attack-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2',20)
@@ -67,12 +66,12 @@ def train_lstm():
 
     with tf.Graph().as_default():
         model_movement = get_movement_model()
-        model_movement.fit(X, Y_movement, n_epoch=50, validation_set=0.1,batch_size=8)
+        model_movement.fit(X, Y_movement, n_epoch=5, validation_set=0.1,batch_size=8)
         model_movement.save('models/movement/movement_model')
 
     with tf.Graph().as_default():
         model_action = get_action_model()
-        model_action.fit(X, Y_action, n_epoch=50, validation_set=0.1,batch_size=8)
+        model_action.fit(X, Y_action, n_epoch=5, validation_set=0.1,batch_size=8)
         model_action.save('models/action/action_model')
 
 

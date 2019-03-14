@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import ImageGrab
-import cv2
-import time, random
+import cv2, time, random
+import tensorflow as tf
 from utilities.directkeys import PressKey,ReleaseKey, W, A, S, D, Q, E
 from net.alexnet import alexnet
 from net.mobilenet import mnet, mnet_feature
@@ -10,7 +10,7 @@ from utilities.utilities import countdown, take_action
 from keras.models import load_model
 from keras.backend.tensorflow_backend import set_session
 from utilities.getkeys import key_check
-import tensorflow as tf
+
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True

@@ -43,7 +43,6 @@ In the $REPO folder, run the following and play the game. Usually 100K+ data poi
 "D:/Program Files/Anaconda3/envs/py-35/python.exe" ./create_training_data.py
 ```
 
-
 ### 8. Supervised Learning Training
 Run from the $REPO folder, and keep the epochs to between 5-15.
 ```

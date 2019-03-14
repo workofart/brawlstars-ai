@@ -9,12 +9,16 @@ import time
 SendInput = ctypes.windll.user32.SendInput
 
 
+# For Game Actions/Movements
 W = 0x11
 A = 0x1E
 S = 0x1F
 D = 0x20
 Q = 0X10
 E = 0X12
+
+# For Restarting Game
+B = 0X30
 
 # C struct redefinitions 
 PUL = ctypes.POINTER(ctypes.c_ulong)

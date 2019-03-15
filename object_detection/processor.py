@@ -99,7 +99,7 @@ class ScreenProcessor:
         doneImg = process_img(doneImg)
         (top, left, res) = match(doneImg, self.done_template, method=cv2.TM_SQDIFF)
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-        if min_loc == (88, 13) and max_loc == (81, 7):
+        if (min_loc == (84, 12) or min_loc == (88, 13)) and (max_loc == (81, 7) or max_loc == (77,6)):
             return True
         else:
             return False

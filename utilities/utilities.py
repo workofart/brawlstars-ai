@@ -1,6 +1,7 @@
 import time, numpy as np
 import cv2
 from utilities.directkeys import PressKey, ReleaseKey, Q, W, E, S, A, D
+from utilities.window import WindowMgr
 
 
 def superattack():
@@ -61,6 +62,10 @@ def mouse(img):
     cv2.setMouseCallback('window',draw_circle)
 
 def take_action(movement_index, action_index):
+    # w = WindowMgr()
+    # w.find_window_wildcard("MEmu")
+    # w.set_foreground()
+    # w.set_foreground()
     if movement_index == 0:
         # print('left')
         left()

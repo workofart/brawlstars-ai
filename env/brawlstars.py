@@ -8,38 +8,34 @@ from experiencebuffer import Experience_Buffer
 import cv2
 import time
 from scipy.stats import mode
+from utilities.window import WindowMgr
 
+# w = WindowMgr()
 class Brawlstars():
 
     def __init__(self):
-        # self.feature_model = mnet_feature()
+        self.feature_model = mnet_feature()
         self.observation_space = np.zeros((1, 62720)) # TODO: decide on data structure, refer to the feature output from mobilenet
         self.action_space = [0,1,2] # attack, super, no-op
         self.movement_space = [0,1,2,3,4] # left, front, right, back, no-op
         self.ScreenProcessor = ScreenProcessor(ImageGrab.grab(bbox=(0,30,1280,745)))
         self.reward_buffer = Experience_Buffer(10) # This is used to prevent screen flickering skewing rewards
-        self.player_top_left = (-1, -1)
-        self.player_bottom_right = (-1, -1)
-        self._previous_reward = -1
         self.reset()
         
     def _getReward(self):
         playerStars = self.ScreenProcessor.getStars(self.player_top_left, self.player_bottom_right)
-        teamStars = self.ScreenProcessor.getTeamStars()
+        # teamStars = self.ScreenProcessor.getTeamStars()
         
-        # The only two cases of valid player_reward
-        self.reward_buffer.add(playerStars + teamStars)
-        mean_reward = np.mean(self.reward_buffer.buffer)
-
         # Invalid player reward
         if (playerStars == 0 or playerStars > 7):
-            mean_reward = self._previous_reward
+            pass
         else:
-            self._previous_reward = mean_reward
+            self.reward_buffer.add(playerStars-2)
         
+        mean_reward = np.mean(self.reward_buffer.buffer)
         return mean_reward
 
-    def step(self, action):
+    def step(self):
         state = self._getObservation()
         done = self._isDone()
         reward = self._getReward()
@@ -48,6 +44,8 @@ class Brawlstars():
 
     def reset(self):
         self.time_step = 0
+        self.player_top_left = (-1, -1)
+        self.player_bottom_right = (-1, -1)
         return self._getObservation()
 
     def _isDone(self):
@@ -55,6 +53,8 @@ class Brawlstars():
         if isDone:
             # print('Restarting game after timestep: {}'.format(self.time_step))
             # Reset the game
+            # w.find_window_wildcard("MEmu")
+            # w.set_foreground()
             PressKey(B)
             time.sleep(0.3)
             ReleaseKey(B)
@@ -87,5 +87,4 @@ class Brawlstars():
         features = self.feature_model.predict([screen.reshape(1,224,224,3)])[0]
 
         self.player_top_left, self.player_bottom_right = self.ScreenProcessor.getPlayerPosition()
-        return features
-    
+        return features.reshape((1, -1))

@@ -1,7 +1,8 @@
 from keras.applications import MobileNetV2
 from keras import Model
 from keras.layers import Dense, Flatten
-
+from keras.backend import set_session
+import tensorflow as tf
 
 def mnet():
     net = MobileNetV2()
@@ -15,6 +16,8 @@ def mnet():
     return model
 
 def mnet_feature():
+    sess = tf.Session(graph=tf.get_default_graph())
+    set_session(sess)
     net = MobileNetV2()
     x = net.layers[-5].output
 

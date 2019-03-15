@@ -1,6 +1,8 @@
 import tensorflow as tf
 import random
+import numpy as np
 from experiencebuffer import Experience_Buffer
+from net.dqnet import DQN_NNET
 
 # Hyper Parameters for DQN
 LEARNING_RATE = 5e-6
@@ -19,39 +21,45 @@ class BrawlAgent:
         self.env = env
         self.replay_buffer = Experience_Buffer()
         self.state_dim = env.observation_space.shape[1] # TODO, need to define a structure
-        self.action_dim = len(env.action_space) # TODO, need to define a structure
+        self.action_dim = len(env.action_space)
+        self.movement_dim = len(env.movement_space)
         self.learning_rate = LEARNING_RATE
         self.update_target_net_freq = UPDATE_TARGET_NETWORK # how many timesteps to update target network params
         self.is_updated_target_net = False
 
         # Reset the graph
-        tf.reset_default_graph()
-        # TODO: Finalize NN for DQN
-        self.network = DQN_NNET(self.state_dim, self.action_dim, self.learning_rate, 'q_network')
-        self.target_network = DQN_NNET(self.state_dim, self.action_dim, self.learning_rate, 'target_q_network')
+        # tf.reset_default_graph()
+        
+        # Action Q_networks
+        self.a_network = DQN_NNET(self.state_dim, self.action_dim, self.learning_rate, 'action_q_network')
+        self.a_target_network = DQN_NNET(self.state_dim, self.action_dim, self.learning_rate, 'action_target_q_network')
+
+        # Movement Q_networks
+        self.m_network = DQN_NNET(self.state_dim, self.movement_dim, self.learning_rate, 'movement_q_network')
+        self.m_target_network = DQN_NNET(self.state_dim, self.movement_dim, self.learning_rate, 'movement_target_q_network')
 
         # Init session
-        self.session = tf.InteractiveSession()
-        self.session.run(tf.initializers.global_variables())
+        # self.session = tf.InteractiveSession()
+        # self.session.run(tf.initializers.global_variables())
 
         # # Tensorboard
         # self.summary_writer = tf.summary.FileWriter('logs/' + str(get_latest_run_count()))
         # self.summary_writer.add_graph(self.session.graph)
 
         # loading networks
-        self.saver = tf.train.Saver()
-        checkpoint = tf.train.get_checkpoint_state("saved_networks")
-        if (self.isTrain is False and checkpoint and checkpoint.model_checkpoint_path) or isLoad is True:
-            self.saver.restore(self.session, checkpoint.model_checkpoint_path)
-            print("Successfully loaded:", checkpoint.model_checkpoint_path)
-        else:
-            print("Could not find old network weights")
+        # self.saver = tf.train.Saver()
+        # checkpoint = tf.train.get_checkpoint_state("saved_networks")
+        # if (self.isTrain is False and checkpoint and checkpoint.model_checkpoint_path) or isLoad is True:
+        #     self.saver.restore(self.session, checkpoint.model_checkpoint_path)
+        #     print("Successfully loaded:", checkpoint.model_checkpoint_path)
+        # else:
+        #     print("Could not find old network weights")
 
     def act(self, state):
         # if self.isTrain is True and self.epsilon > FINAL_EPSILON:
             # self.epsilon -= (INITIAL_EPSILON - FINAL_EPSILON) / self.env.data_length
 
-        if self.isTrain is True and random.random() <= self.epsilon:
+        if random.random() <= self.epsilon:
             return random.randint(0, self.action_dim - 1)
         else:
             output = self.network.output.eval(feed_dict = {

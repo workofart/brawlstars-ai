@@ -11,14 +11,15 @@ class ScreenProcessor:
 
     def __init__(self, orig_screen):
         self.refDigits = self.digit_parser()
-        self.name_template = cv2.imread('../object_detection/img/name.png',0)
-        self.stars_template = cv2.imread('../object_detection/img/stars.png',1)
+        self.name_template = cv2.imread('object_detection/img/name.png',0)
+        self.stars_template = cv2.imread('object_detection/img/stars.png',1)
+        self.done_template = cv2.imread('object_detection/img/done.png',1)
         self.orig_screen = orig_screen
         self.previous_top_left=(485,334)
         self.previous_bottom_right=(759, 373)
 
     def digit_parser(self):
-        ref = cv2.imread('../digits/digits.png')
+        ref = cv2.imread('digits/digits.png')
         ref = cv2.cvtColor(ref, cv2.COLOR_BGR2GRAY)
         ref = cv2.threshold(ref, 200, 255, cv2.THRESH_BINARY_INV)[1]
         refCnts = cv2.findContours(ref.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
@@ -88,11 +89,21 @@ class ScreenProcessor:
     def getTeamStars(self):
         image = self.orig_screen.crop(box=(90,23,140,60))
 
-        teamstars = ''.join(self.process_target_digit(np.array(image), self.refDigits))
+        teamstars = ''.join(self.process_target_digit(np.array(image)))
         if teamstars != '':
             return int(teamstars)
         else:
             return -1
+    def isDone(self):
+        doneImg = np.array(self.orig_screen.crop(box=(983,621,1252,689)))
+        doneImg = process_img(doneImg)
+        (top, left, res) = match(doneImg, self.done_template, method=cv2.TM_SQDIFF)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+        if min_loc == (88, 13) and max_loc == (81, 7):
+            return True
+        else:
+            return False
+        # print('{0} | {1} | {2} | {3}'.format(min_val, max_val, min_loc, max_loc))
 
     # TODO: Not completed
     def getHP(self, image):
@@ -158,16 +169,6 @@ class ScreenProcessor:
 
         return top_left, bottom_right
         # Commented out: previous_top_left, previous_bottom_right
-
-    def process_screen(self, refDigits):
-        top_left, bottom_right = self.getPlayerPosition(screen)
-            
-        # Get the stars from the stars_img
-        playerStars = self.getStars(orig_screen, self.stars_template, top_left, bottom_right)
-        print('Player stars: ' + str(playerStars))
-
-        teamStars = self.getTeamStars(orig_screen, self.refDigits)
-        print('Team stars: ' + str(teamStars))
 
     def example(self):
 

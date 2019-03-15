@@ -33,6 +33,13 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "DQN",
+            "type": "python",
+            "request": "launch",
+            "module": "dqn",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python: Django",
             "type": "python",
             "request": "launch",

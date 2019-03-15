@@ -36,22 +36,23 @@ def template_match_example():
         plt.suptitle(meth)
         plt.show()
 
-def match(img, template, isCanny = True, method=cv.TM_CCORR):
+def match(img, template, isCanny = True, method=cv2.TM_CCORR):
     if isCanny:
-        template = cv.Canny(template, threshold1 = 150, threshold2=300)
+        template = cv2.Canny(template, threshold1 = 150, threshold2=300)
     
-    # cv.imshow("Template", template)
+    # cv2.imshow("Template", template)
+    # cv2.waitKey()
     h, w = [template.shape[0], template.shape[1]]
     
     # Apply template Matching
-    res = cv.matchTemplate(img,template,method)
+    res = cv2.matchTemplate(img,template,method)
     
     # Get the box coordinate from the matched result
-    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     top_left = max_loc
     bottom_right = (top_left[0] + w, top_left[1] + h)
 
-    cv.rectangle(img,top_left, bottom_right, 255, 2)
+    cv2.rectangle(img,top_left, bottom_right, 255, 2)
     return top_left, bottom_right, res
 

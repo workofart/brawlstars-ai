@@ -2,7 +2,7 @@ import numpy as np
 from net.mobilenet import mnet_feature
 from PIL import ImageGrab
 from object_detection.processor import ScreenProcessor, match
-from utilities.directkeys import PressKey, ReleaseKey, B
+from utilities.directkeys import PressKey, ReleaseKey, B, W, S, A, D
 from utilities.utilities import mouse
 from experiencebuffer import Experience_Buffer
 import cv2
@@ -10,7 +10,7 @@ import time
 from scipy.stats import mode
 from utilities.window import WindowMgr
 
-# w = WindowMgr()
+w = WindowMgr()
 class Brawlstars():
 
     def __init__(self):
@@ -22,7 +22,7 @@ class Brawlstars():
         self.reward_buffer = Experience_Buffer(10) # This is used to prevent screen flickering skewing rewards
         self.reset()
         
-    def _getReward(self):
+    def _getReward(self, action):
         playerStars = self.ScreenProcessor.getStars(self.player_top_left, self.player_bottom_right)
         # teamStars = self.ScreenProcessor.getTeamStars()
         
@@ -33,12 +33,17 @@ class Brawlstars():
             self.reward_buffer.add(playerStars-2)
         
         mean_reward = np.mean(self.reward_buffer.buffer)
+        # adjust based on attack used
+        if action[1] == 0:
+            mean_reward -= 0.3
+        elif action[1] == 1:
+            mean_reward -= 0.6
         return mean_reward
 
-    def step(self):
+    def step(self, action):
         state = self._getObservation()
         done = self._isDone()
-        reward = self._getReward()
+        reward = self._getReward(action)
         self.time_step += 1
         return state, reward, done
 
@@ -53,11 +58,8 @@ class Brawlstars():
         if isDone:
             # print('Restarting game after timestep: {}'.format(self.time_step))
             # Reset the game
-            # w.find_window_wildcard("MEmu")
-            # w.set_foreground()
-            PressKey(B)
-            time.sleep(0.3)
-            ReleaseKey(B)
+            w.find_window_wildcard("雷电模拟器")
+            w.set_foreground()
             PressKey(B)
             time.sleep(0.3)
             ReleaseKey(B)
@@ -65,7 +67,13 @@ class Brawlstars():
             PressKey(B)
             time.sleep(0.3)
             ReleaseKey(B)
-            time.sleep(8) # Wait for game to begin
+            time.sleep(5) # Wait for game to begin
+            for i in range(30):
+                PressKey(B)
+                time.sleep(0.1)
+                ReleaseKey(B)
+            
+
         return isDone
         # cv2.imshow('done', np.array(self.ScreenProcessor.orig_screen.crop(box=(983,621,1252,689))))
         # cv2.waitKey()

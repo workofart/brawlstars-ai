@@ -73,6 +73,9 @@ cuda-memcheck ./yourApp
 ### Keyboard Scancodes
 [Link](http://www.ee.bgu.ac.il/~microlab/MicroLab/Labs/ScanCodes.htm)
 
+### Problem with WSAD keys not working in android emulator
+Set the fixed navigation to be True.
+
 ### Accessing Private Repos in the cloud while the SSH keys are changing everytime the instance is restarted
 Put the following into `~/.ssh/config`
 ```
@@ -110,3 +113,17 @@ Refer to: https://github.com/ChintanTrivedi/DeepGamingAI_FIFARL
 - Install python-setuptools, or else can't use `setup.py`
 - If you use `easy_setup`, in other words, the `python-setuptools` above, you will need to specify the python version by using `python3` for 3+ because `python` by default will make the setup install everything in python 2.7
 - You will need to do `python setup.py build` first, then `python setup.py install` after, which will install everything into the libs folder in `pyenv/version/3.6.8/libs/python3.6.8/site-packages`
+
+
+# Performance Tracking
+
+## Run 1 (1e-4_354EP_128Batch_TrainPer256Steps)
+```
+LEARNING_RATE = 1e-4
+EP = 354
+BATCH_SIZE=128
+TRAIN_PER_STEPS = 256
+```
+Summary:
+Perhaps the learning rate was too small, after 354 episodes, the mean cost of both movement and attack networks was still around 9500.
+The mean reward per episode did not show an increase trend over time, it was still revolving around 0.2 with large variances.

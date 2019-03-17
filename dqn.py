@@ -4,10 +4,13 @@ from tqdm import tqdm
 from matplotlib import pyplot as plt
 from agent import BrawlAgent
 from env.brawlstars import Brawlstars
+from utilities.utilities import log_histogram, log_scalars, variable_summaries, PressKey, ReleaseKey
+from utilities.directkeys import B
 from keras.backend import set_session
+import time
 
 EPISODE = 500 # Episode limitation
-TRAIN_EVERY_STEPS = 512
+TRAIN_EVERY_STEPS = 256
 BATCH_SIZE = 128 # size of minibatch
 
 # reproducible
@@ -33,15 +36,21 @@ def main(isLoad=False):
         done = False
         agent.replay_buffer.clear()
         avg_reward_list = []
-    #     actions_list = []
+        attack_list = []
+        movement_list = []
         previous_reward = -1 # to prevent print too much noise
+        PressKey(B)
+        time.sleep(0.3)
+        ReleaseKey(B)
         while done is False:
             action = agent.act(state) # Return Format: [movementArray, actionArray]
-            state, reward, done = agent.env.step() # No longer needs action to be passed in
-            if reward != previous_reward:
-                previous_reward = reward
+            state, reward, done = agent.env.step(action) # No longer needs action to be passed in
+            # if reward != previous_reward:
+                # previous_reward = reward
                 # print(reward)
     #         actions_list.append(action)
+            movement_list.append(action[0])
+            attack_list.append(action[1])
             avg_reward_list.append(reward)
             if done is False:
                 next_state = agent.env._getObservation() # Get the next state
@@ -51,12 +60,27 @@ def main(isLoad=False):
         # Update epsilon after every episode
         if agent.epsilon > agent.final_epsilon:
             agent.epsilon -= (1 - agent.final_epsilon) / (EPISODE/1.2)
-        print('[{0}] Average Reward: {1}'.format(i+1, np.mean(avg_reward_list)))
+        # print('[{0}] Average Reward: {1}'.format(i+1, np.mean(avg_reward_list)))
         
-    #     # log_histogram(agent.summary_writer, 'reward_dist', avg_reward_list, i)
-    #     # log_scalars(agent.summary_writer, 'avg_reward', np.mean(avg_reward_list), i)
-    #     # log_scalars(agent.summary_writer, 'drawdown', np.mean(np.sum(np.array(avg_reward_list) < INIT_CASH, axis=0)), i)
-    #     # log_scalars(agent.summary_writer, 'action_errors', np.mean(agent.env.error_count), i)
-        
+        log_histogram(agent.summary_writer, 'reward_dist', avg_reward_list, i)
+        log_histogram(agent.summary_writer, 'movement_dist', movement_list, i)
+        log_histogram(agent.summary_writer, 'attack_dist', attack_list, i)
+        log_scalars(agent.summary_writer, 'avg_reward', np.mean(avg_reward_list), i)
+    
+    
+def test():
+    # Reset the graph
+    tf.reset_default_graph()
+    env = Brawlstars()
+    agent = BrawlAgent(env)
+    agent.isTest = True
+    state = agent.env.reset() # To start the process
+
+    done = False
+    while done is False:
+        action = agent.act(state)
+        state, reward, done = agent.env.step(action)
+
 if __name__ == '__main__':
     main()
+    # test()

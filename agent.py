@@ -3,7 +3,7 @@ import random, time
 import numpy as np
 from experiencebuffer import Experience_Buffer
 from net.dqnet import DQN_NNET
-from utilities.utilities import take_action
+from utilities.utilities import take_action, get_latest_run_count
 from utilities.window import WindowMgr
 
 # Hyper Parameters for DQN
@@ -11,7 +11,7 @@ LEARNING_RATE = 1e-4
 INITIAL_EPSILON = 1 # starting value of epsilon
 FINAL_EPSILON = 0.05 # ending value of epislon
 DECAY = 0.993 # epsilon decay
-GAMMA = 0.95 # discount factor for q value
+GAMMA = 0.90 # discount factor for q value
 UPDATE_TARGET_NETWORK = 2
 SAVE_NETWORK = 3
 w = WindowMgr()
@@ -28,7 +28,8 @@ class BrawlAgent:
         self.learning_rate = LEARNING_RATE
         self.update_target_net_freq = UPDATE_TARGET_NETWORK # how many timesteps to update target network params
         self.is_updated_target_net = False
-        
+        self.isTest = False
+
         # Action Q_networks
         self.a_network = DQN_NNET(self.state_dim, self.action_dim, self.learning_rate, 'action_q_network')
         self.a_target_network = DQN_NNET(self.state_dim, self.action_dim, self.learning_rate, 'action_target_q_network')
@@ -42,8 +43,8 @@ class BrawlAgent:
         self.session.run(tf.initializers.global_variables())
 
         # # Tensorboard
-        # self.summary_writer = tf.summary.FileWriter('logs/' + str(get_latest_run_count()))
-        # self.summary_writer.add_graph(self.session.graph)
+        self.summary_writer = tf.summary.FileWriter('logs/' + str(get_latest_run_count()))
+        self.summary_writer.add_graph(self.session.graph)
 
         # loading networks
         self.saver = tf.train.Saver()
@@ -57,7 +58,7 @@ class BrawlAgent:
     def act(self, state):
         # if self.isTrain is True and self.epsilon > FINAL_EPSILON:
             # self.epsilon -= (INITIAL_EPSILON - FINAL_EPSILON) / self.env.data_length
-        if random.random() <= self.epsilon:
+        if random.random() <= self.epsilon and self.isTest is not True:
             action = random.randint(0, self.action_dim - 1)
             movement = random.randint(0, self.movement_dim - 1)
         else:
@@ -153,8 +154,8 @@ class BrawlAgent:
 
         # Train on one batch on the Q-network
         start_time = time.time()
-        # _, m_c, m_summary = self.session.run([self.m_network.optimizer, self.m_network.cost, self.m_network.merged_summary],
-        _, m_c = self.session.run([self.m_network.optimizer, self.m_network.cost],
+        _, m_c, m_summary = self.session.run([self.m_network.optimizer, self.m_network.cost, self.m_network.merged_summary],
+        # _, m_c = self.session.run([self.m_network.optimizer, self.m_network.cost],
                             feed_dict={
                                 self.m_network.Q_input: np.reshape(m_y_batch, (batch_size, 1)),
                                 self.m_network.action_input: movement_batch,
@@ -162,8 +163,8 @@ class BrawlAgent:
                             }
         )
 
-        # _, a_c, a_summary = self.session.run([self.a_network.optimizer, self.a_network.cost, self.a_network.merged_summary],
-        _, a_c = self.session.run([self.a_network.optimizer, self.a_network.cost],
+        _, a_c, a_summary = self.session.run([self.a_network.optimizer, self.a_network.cost, self.a_network.merged_summary],
+        # _, a_c = self.session.run([self.a_network.optimizer, self.a_network.cost],
                             feed_dict={
                                 self.a_network.Q_input: np.reshape(a_y_batch, (batch_size, 1)),
                                 self.a_network.action_input: action_batch,
@@ -171,12 +172,12 @@ class BrawlAgent:
                             }
         )
 
-        print('Training time: ' + str(time.time() - start_time))
-        # self.summary_writer.add_summary(m_summary, ep)
-        # self.summary_writer.add_summary(a_summary, ep)
+        # print('Training time: ' + str(time.time() - start_time))
+        self.summary_writer.add_summary(m_summary, ep)
+        self.summary_writer.add_summary(a_summary, ep)
 
         # save network 9 times per episode
         if ep % SAVE_NETWORK == 0:
-            self.saver.save(self.session, 'saved_networks/' + 'network' + '-dqn', global_step = ep)
+            self.saver.save(self.session, 'logs/' + str(get_latest_run_count()-1) +'/saved_networks/' + 'network' + '-dqn', global_step = ep)
 
         return m_c, a_c

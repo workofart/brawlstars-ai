@@ -1,6 +1,7 @@
 import win32gui, win32com.client
 import re
-
+import pyautogui
+from utilities.directkeys import W, PressKey, ReleaseKey
 
 class WindowMgr:
     """Encapsulates some calls to the winapi for window management"""
@@ -26,13 +27,13 @@ class WindowMgr:
 
     def set_foreground(self):
         shell = win32com.client.Dispatch("WScript.Shell")
-        shell.SendKeys('%')
+        shell.SendKeys('u')
         """put the window in the foreground"""
         win32gui.SetForegroundWindow(self._handle)
+        return shell
 
+# import time
+# w = WindowMgr()
+# w.find_window_wildcard("雷电模拟器")
+# shell = w.set_foreground()
 
-w = WindowMgr()
-w.find_window_wildcard("MEmu")
-w.set_foreground()
-w.set_foreground()
-print(win32gui.GetWindowText(w._handle))

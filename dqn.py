@@ -22,12 +22,12 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 # config.log_device_placement = True
 
+# Reset the graph
+tf.reset_default_graph()
 sess = tf.Session(config=config)
 set_session(sess)
 
 def main(isLoad=False):
-    # Reset the graph
-    tf.reset_default_graph()
     env = Brawlstars()
     agent = BrawlAgent(env)
     for i in tqdm(range(EPISODE)):

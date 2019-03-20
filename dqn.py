@@ -7,7 +7,7 @@ from env.brawlstars import Brawlstars
 from utilities.utilities import log_histogram, log_scalars, variable_summaries, PressKey, ReleaseKey
 from utilities.directkeys import B
 from keras.backend import set_session
-import time
+import time, math
 
 EPISODE = 500 # Episode limitation
 TRAIN_EVERY_STEPS = 256
@@ -24,7 +24,7 @@ config.gpu_options.allow_growth = True
 
 # Reset the graph
 tf.reset_default_graph()
-sess = tf.Session(config=config)
+sess = tf.InteractiveSession(config=config)
 set_session(sess)
 
 def main(isLoad=False):
@@ -45,6 +45,9 @@ def main(isLoad=False):
         while done is False:
             action = agent.act(state) # Return Format: [movementArray, actionArray]
             state, reward, done = agent.env.step(action) # No longer needs action to be passed in
+            if math.isnan(reward):
+                continue
+
             # if reward != previous_reward:
                 # previous_reward = reward
                 # print(reward)

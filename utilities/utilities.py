@@ -154,8 +154,9 @@ def log_scalars(writer, tag, values, step):
 def get_latest_run_count():
     path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'logs'))
     dirs = [name for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
-    if len(dirs) == 0:
-        return 0
-    else:
-        return int(max(dirs)) + 1
+    # if len(dirs) == 0:
+    #     return 0
+    # else:
+        # return int(max(dirs)) + 1
+    return len(dirs)
 

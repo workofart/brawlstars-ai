@@ -170,3 +170,33 @@ TRAIN_PER_STEPS = 256
 Summary:
 Perhaps the learning rate was too small, after 354 episodes, the mean cost of both movement and attack networks was still around 9500.
 The mean reward per episode did not show an increase trend over time, it was still revolving around 0.2 with large variances.
+
+## Run 2 (3)
+```
+LEARNING_RATE = 3e-3
+EP = 500
+BATCH_SIZE=128
+TRAIN_PER_STEPS = 256
+```
+Summary:
+After increasing the learning rate from 1e-4 to 3e-3, after 500 episodes, the mean cost of both movement and attack networks is around 785.
+The mean reward per episode showed an increase trend over time and peaked around EP 212, and decreased and stablized around 0.18. The agent's behavior in game is basically standing in the corner attacking the air once every 5 seconds. It must be because the agent realized the high cost of attacking, and experienced an increase in rewards after decreasing the attack frequency.
+
+
+## Run 3 (4)
+```
+LEARNING_RATE = 3e-3
+EP = 727
+BATCH_SIZE=128
+TRAIN_PER_STEPS = 256
+```
+The cost decreased to 555 after 727 episodes, however the average reward is still oscilating around 0.05.
+
+## Run 4 (5)
+```
+LEARNING_RATE = 3e-3
+EP = 1000
+BATCH_SIZE=128
+TRAIN_PER_STEPS = 256
+```
+The cost decreased to 22 after 1000 episodes, however the average reward is still oscilating around 0.35. I've noticed the agent not moving at all for prolonged periods of time, and suddenly moving forward even keep pressing forward after reaching the opposing spawn point's wall.

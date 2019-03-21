@@ -13,7 +13,7 @@ HEIGHT = 60
 LR = 3e-5
 EPOCHS = 500
 
-train_data = np.load('data/training_data_bounty_attack_mobilenet.npy')
+train_data = np.load('data/training_data_bounty_attack_raw_screen_200_200.npy')
 
 def preprocess(data, length, WIDTH, HEIGHT):
     train = data[:-length]
@@ -66,12 +66,12 @@ def train_lstm():
 
     with tf.Graph().as_default():
         model_movement = get_movement_model()
-        model_movement.fit(X, Y_movement, n_epoch=5, validation_set=0.1,batch_size=8)
+        model_movement.fit(X, Y_movement, n_epoch=25, validation_set=0.1,batch_size=8)
         model_movement.save('models/movement/movement_model')
 
     with tf.Graph().as_default():
         model_action = get_action_model()
-        model_action.fit(X, Y_action, n_epoch=5, validation_set=0.1,batch_size=8)
+        model_action.fit(X, Y_action, n_epoch=25, validation_set=0.1,batch_size=8)
         model_action.save('models/action/action_model')
 
 

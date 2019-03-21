@@ -7,7 +7,7 @@ import os
 
 def get_movement_model():
     # Network building
-    net = tflearn.input_data(shape=[None, 10, 62720], name='net1_layer1')
+    net = tflearn.input_data(shape=[None, 10, 40000], name='net1_layer1')
     net = tflearn.lstm(net, n_units=256, return_seq=True, name='net1_layer2')
     net = tflearn.dropout(net, 0.6, name='net1_layer3')
     net = tflearn.lstm(net, n_units=256, return_seq=False, name='net1_layer4')
@@ -20,7 +20,7 @@ def get_movement_model():
 
 def get_action_model():
     # Network building
-    net = tflearn.input_data(shape=[None, 10, 62720], name='net2_layer1')
+    net = tflearn.input_data(shape=[None, 10, 40000], name='net2_layer1')
     net = tflearn.lstm(net, n_units=256, return_seq=True, name='net2_layer2')
     net = tflearn.dropout(net, 0.6, name='net2_layer3')
     net = tflearn.lstm(net, n_units=256, return_seq=False, name='net2_layer4')

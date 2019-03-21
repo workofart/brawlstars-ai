@@ -3,8 +3,6 @@ import tensorflow as tf
 import tflearn
 import os
 
-# TODO: change output layer to be 5 and 3 for adding no-op
-
 def get_movement_model():
     # Network building
     net = tflearn.input_data(shape=[None, 10, 40000], name='net1_layer1')
@@ -13,7 +11,7 @@ def get_movement_model():
     net = tflearn.lstm(net, n_units=256, return_seq=False, name='net1_layer4')
     net = tflearn.dropout(net, 0.6, name='net1_layer5')
     net = tflearn.fully_connected(net, 5, activation='softmax', name='net1_layer6')
-    net = tflearn.regression(net, optimizer='sgd', loss='categorical_crossentropy', learning_rate=0.001,
+    net = tflearn.regression(net, optimizer='rmsprop', loss='categorical_crossentropy', learning_rate=0.001,
                              name='net1_layer7')
     return tflearn.DNN(net, clip_gradients=5.0, tensorboard_verbose=0)
 
@@ -26,7 +24,7 @@ def get_action_model():
     net = tflearn.lstm(net, n_units=256, return_seq=False, name='net2_layer4')
     net = tflearn.dropout(net, 0.6, name='net2_layer5')
     net = tflearn.fully_connected(net, 3, activation='softmax', name='net2_layer6')
-    net = tflearn.regression(net, optimizer='sgd', loss='categorical_crossentropy', learning_rate=0.001,
+    net = tflearn.regression(net, optimizer='rmsprop', loss='categorical_crossentropy', learning_rate=0.001,
                              name='net2_layer7')
     return tflearn.DNN(net, clip_gradients=5.0, tensorboard_verbose=0)
 

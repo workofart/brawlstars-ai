@@ -4,7 +4,8 @@ import cv2, time, imutils
 from imutils import contours as ctr_utils
 import pyautogui, pytesseract
 from utilities.directkeys import PressKey, ReleaseKey, W, A, S, D
-from utilities.utilities import mouse
+from utilities.getkeys import key_check
+from utilities.utilities import mouse, countdown
 from utilities.img_utils import process_img, match
 
 class ScreenProcessor:
@@ -170,36 +171,16 @@ class ScreenProcessor:
         return top_left, bottom_right
         # Commented out: previous_top_left, previous_bottom_right
 
-    def example(self):
-
-        for i in list(range(1))[::-1]:
-            print(i+1)
-            time.sleep(1)
-
-        # last_time = time.time()
-
+    def record_screen(self):
+        countdown(5)
+        count = 0
         while True:
-            # raw_img = ImageGrab.grab(bbox=(0,30,1280,745))
-            screen =  np.array(self.orig_screen.copy())
-            screen = process_img(screen)
-
-            mouse(screen)
-
-            top_left, bottom_right, self.previous_top_left, self.previous_bottom_right = self.getPlayerPosition(screen, self.name_template, self.previous_top_left, self.previous_bottom_right)
-                
-            # Get the stars from the stars_img
-            playerStars = self.getStars(self.orig_screen, self.stars_template, top_left, bottom_right)
-            print('Player stars: ' + str(playerStars))
-
-            teamStars = self.getTeamStars(self.orig_screen, self.refDigits)
-            print('Team stars: ' + str(teamStars))
-
-            # TODO: Crop out the hp img based on player position
-            # hp_img = raw_img.crop(box=(top_left[0],top_left[1]+18,bottom_right[0],bottom_right[1]+20)) 
-            # getHP(hp_img)
-            
-            cv2.imshow('window', screen)
-
-            if cv2.waitKey(25) & 0xFF == ord('q'):
+            raw_img = ImageGrab.grab(bbox=(0,30,1280,745))
+            cv2.imwrite('{0}.png'.format(count), np.array(raw_img))
+            print(count)
+            count += 1
+            time.sleep(2)
+            key = key_check()
+            if key == 'p':
                 cv2.destroyAllWindows()
                 break

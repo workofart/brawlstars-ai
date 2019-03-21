@@ -4,24 +4,25 @@
 
 Run in $REPO/object_detection
 ```
-& "D:/Program Files/Anaconda3/envs/py-35/python.exe" d:/Github/brawlstars-ai/object_detection/xml_to_csv.py
+& "D:/Program Files/Anaconda3/envs/tf-gpu/python.exe" d:/Github/brawlstars-ai/object_detection/xml_to_csv.py
 ```
 
 ### 2. Generate TF_Record
-
+**Don't forget to change the labels in the `generate_tfrecord.py` file**
 Run in $REPO/object_detection
 ```
-& "D:/Program Files/Anaconda3/envs/py-35/python.exe" .\generate_tfrecord.py --csv_input=data/train.csv --output_path=data/train.record --image_dir=img/train
+& "D:/Program Files/Anaconda3/envs/tf-gpu/python.exe" .\generate_tfrecord.py --csv_input=data/train.csv --output_path=data/train.record --image_dir=img/train
 ```
 
 ```
-& "D:/Program Files/Anaconda3/envs/py-35/python.exe" .\generate_tfrecord.py --csv_input=data/test.csv --output_path=data/test.record --image_dir=img/test
+& "D:/Program Files/Anaconda3/envs/tf-gpu/python.exe" .\generate_tfrecord.py --csv_input=data/test.csv --output_path=data/test.record --image_dir=img/test
 ```
 
 ### 3. Train Object Detection Model
 Run in $REPO/object_detection
+**Don't forget to configure the `ssd_mobilenet.config` for the correct number of classes.**
 ```
-& "D:/Program Files/Anaconda3/envs/py-35/python.exe" "D:\Github\temp\models\research\object_detection\legacy\train.py" --logtostderr --train_dir=training/ --pipeline_config_path=ssd_mobilenet.config
+& "D:/Program Files/Anaconda3/envs/tf-gpu/python.exe" "D:\Github\temp\models\research\object_detection\legacy\train.py" --logtostderr --train_dir=training/ --pipeline_config_path=ssd_mobilenet.config
 ```
 
 ### 4. Generate Inference Graph
@@ -35,18 +36,19 @@ jupyter notebook
 ```
 
 ### 6. Real-time Player detection 
+Don't forget to change the inference graph folders in `player_detection.py`, as well as number of classes.
 Because `player_detection.py` relies on the `utils` modules inside of `models/research/object_detection`, it needs to be copied into that folder. Also, `grabscreen.py` will need to be copied over too.
 
 ### 7. Record Supervised Learning Data
 In the $REPO folder, run the following and play the game. Usually 100K+ data points is decent for training.
 ```
-"D:/Program Files/Anaconda3/envs/py-35/python.exe" ./create_training_data.py
+"D:/Program Files/Anaconda3/envs/tf-gpu/python.exe" ./create_training_data.py
 ```
 
 ### 8. Supervised Learning Training
 Run from the $REPO folder, and keep the epochs to between 5-15.
 ```
-"D:/Program Files/Anaconda3/envs/py-35/python.exe" ./train_model.py
+"D:/Program Files/Anaconda3/envs/tf-gpu/python.exe" ./train_model.py
 ```
 
 ### Check if Tensorflow has detected GPU for its training sessions

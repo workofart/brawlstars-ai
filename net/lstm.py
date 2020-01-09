@@ -3,30 +3,30 @@ import tensorflow as tf
 import tflearn
 import os
 
-def get_movement_model():
+def get_movement_model(steps):
     # Network building
-    net = tflearn.input_data(shape=[None, 10, 40000], name='net1_layer1')
+    net = tflearn.input_data(shape=[None, steps, 128], name='net1_layer1')
     net = tflearn.lstm(net, n_units=256, return_seq=True, name='net1_layer2')
-    net = tflearn.dropout(net, 0.6, name='net1_layer3')
+    net = tflearn.dropout(net, 0.8, name='net1_layer3')
     net = tflearn.lstm(net, n_units=256, return_seq=False, name='net1_layer4')
-    net = tflearn.dropout(net, 0.6, name='net1_layer5')
+    net = tflearn.dropout(net, 0.8, name='net1_layer5')
     net = tflearn.fully_connected(net, 5, activation='softmax', name='net1_layer6')
-    net = tflearn.regression(net, optimizer='rmsprop', loss='categorical_crossentropy', learning_rate=0.001,
+    net = tflearn.regression(net, optimizer='rmsprop', loss='categorical_crossentropy', learning_rate=0.0001,
                              name='net1_layer7')
-    return tflearn.DNN(net, clip_gradients=5.0, tensorboard_verbose=0)
+    return tflearn.DNN(net, clip_gradients=5.0, tensorboard_dir='logs', tensorboard_verbose=0)
 
 
-def get_action_model():
+def get_action_model(steps):
     # Network building
-    net = tflearn.input_data(shape=[None, 10, 40000], name='net2_layer1')
+    net = tflearn.input_data(shape=[None, steps, 128], name='net2_layer1')
     net = tflearn.lstm(net, n_units=256, return_seq=True, name='net2_layer2')
-    net = tflearn.dropout(net, 0.6, name='net2_layer3')
+    net = tflearn.dropout(net, 0.8, name='net2_layer3')
     net = tflearn.lstm(net, n_units=256, return_seq=False, name='net2_layer4')
-    net = tflearn.dropout(net, 0.6, name='net2_layer5')
+    net = tflearn.dropout(net, 0.8, name='net2_layer5')
     net = tflearn.fully_connected(net, 3, activation='softmax', name='net2_layer6')
-    net = tflearn.regression(net, optimizer='rmsprop', loss='categorical_crossentropy', learning_rate=0.001,
+    net = tflearn.regression(net, optimizer='rmsprop', loss='categorical_crossentropy', learning_rate=1e-5,
                              name='net2_layer7')
-    return tflearn.DNN(net, clip_gradients=5.0, tensorboard_verbose=0)
+    return tflearn.DNN(net, clip_gradients=5.0, tensorboard_dir='logs', tensorboard_verbose=0)
 
 
 def reshape_for_lstm(data, steps_of_history=10):
@@ -52,16 +52,3 @@ def reshape_for_lstm(data, steps_of_history=10):
     print(np.array(trainY_action).shape)
 
     return trainX, list(trainY_movement), list(trainY_action)
-
-
-def get_list(n_samples=10000):
-    list = []
-    for i in range(0, n_samples):
-        feature_vector = np.random.rand(128, 1)
-        output_movement = np.zeros((4, 1))
-        output_movement[np.random.randint(0, 4), 0] = 1
-        output_action = np.zeros((2, 1))
-        output_action[np.random.randint(0, 4), 0] = 1
-        list.append([feature_vector, output_movement, output_action])
-    return list
-

@@ -171,15 +171,14 @@ class ScreenProcessor:
         return top_left, bottom_right
         # Commented out: previous_top_left, previous_bottom_right
 
-    def record_screen(self):
+    def record_screen(self, count=0):
         countdown(5)
-        count = 0
         while True:
             raw_img = ImageGrab.grab(bbox=(0,30,1280,745))
             cv2.imwrite('{0}.png'.format(count), np.array(raw_img))
             print(count)
             count += 1
-            time.sleep(2)
+            time.sleep(1)
             key = key_check()
             if key == 'p':
                 cv2.destroyAllWindows()

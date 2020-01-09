@@ -7,8 +7,8 @@ from utilities.utilities import take_action, get_latest_run_count
 from utilities.window import WindowMgr
 
 # Hyper Parameters for DQN
-LEARNING_RATE = 1e-4
-INITIAL_EPSILON = 1 # starting value of epsilon
+LEARNING_RATE = 1e-3
+INITIAL_EPSILON = 0.7 # starting value of epsilon
 FINAL_EPSILON = 0.05 # ending value of epislon
 DECAY = 0.993 # epsilon decay
 GAMMA = 0.90 # discount factor for q value
@@ -39,7 +39,8 @@ class BrawlAgent:
         self.m_target_network = DQN_NNET(self.state_dim, self.movement_dim, self.learning_rate, 'movement_target_q_network')
 
         # Init session
-        self.session = tf.InteractiveSession()
+        # self.session = tf.InteractiveSession()
+        self.session = tf.get_default_session()
         self.session.run(tf.initializers.global_variables())
 
         # # Tensorboard
@@ -48,7 +49,7 @@ class BrawlAgent:
 
         # loading networks
         self.saver = tf.train.Saver()
-        checkpoint = tf.train.get_checkpoint_state("saved_networks")
+        checkpoint = tf.train.get_checkpoint_state('logs/' + str(get_latest_run_count()-2) + "/saved_networks")
         if (checkpoint and checkpoint.model_checkpoint_path):
             self.saver.restore(self.session, checkpoint.model_checkpoint_path)
             print("Successfully loaded:", checkpoint.model_checkpoint_path)
@@ -74,7 +75,8 @@ class BrawlAgent:
 
         # print('Selected Action: {0}'.format(action))
         # print('Selected Movement: {0}'.format(movement))
-
+        w.find_window_wildcard("雷电模拟器")
+        w.set_foreground()
         take_action(movement, action)
 
         return [movement, action]

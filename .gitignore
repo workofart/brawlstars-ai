@@ -1,11 +1,10 @@
 *.pyc
-__pycache__\
+**/__pycache__
 **/brawlstars_ai.egg-info
 **/log
 **/data
 **/models
 **/build
-**/ssd_mobilenet*
 **/training
 **/training_bk
 **/build
@@ -21,5 +20,6 @@ checkpoint
 *.pb
 *.meta
 *.index
-
+**/*inference_graph
+**/pre_trained
 events.out.tfevents*

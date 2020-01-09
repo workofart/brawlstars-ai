@@ -12,8 +12,9 @@ WIDTH = 80
 HEIGHT = 60
 LR = 3e-5
 EPOCHS = 500
+STEPS = 16
 
-train_data = np.load('data/training_data_bounty_attack_raw_screen_200_200.npy')
+train_data = np.load('data/training_data_bounty_attack_mnet2.npy')
 
 def preprocess(data, length, WIDTH, HEIGHT):
     train = data[:-length]
@@ -62,16 +63,16 @@ def train_lstm():
     print('Loaded supervised learning data: ' + str(np.shape(data)))
 
     # preprocess training data
-    X, Y_movement, Y_action = reshape_for_lstm(data)
+    X, Y_movement, Y_action = reshape_for_lstm(data, steps_of_history=STEPS)
 
     with tf.Graph().as_default():
-        model_movement = get_movement_model()
-        model_movement.fit(X, Y_movement, n_epoch=25, validation_set=0.1,batch_size=8)
+        model_movement = get_movement_model(STEPS)
+        model_movement.fit(X, Y_movement, n_epoch=200, validation_set=0.1,batch_size=64)
         model_movement.save('models/movement/movement_model')
 
     with tf.Graph().as_default():
-        model_action = get_action_model()
-        model_action.fit(X, Y_action, n_epoch=25, validation_set=0.1,batch_size=8)
+        model_action = get_action_model(STEPS)
+        model_action.fit(X, Y_action, n_epoch=80, validation_set=0.1,batch_size=64)
         model_action.save('models/action/action_model')
 
 

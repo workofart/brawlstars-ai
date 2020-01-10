@@ -1,0 +1,1 @@
+## This folder contains the digit assets used for score detection.

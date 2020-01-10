@@ -1,0 +1,1 @@
+## This folder contains the neural networks used for transfer-learning (`alexnet.py`, `lstm.py`, `mobilenet.py`) in the supervised learning approach, as well as the deep q-network (`dqnet.py`) for the reinforcement learning approach.

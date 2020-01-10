@@ -7,7 +7,7 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = 'brawlstars-ai'
-DESCRIPTION = 'My short description for my project.'
+DESCRIPTION = 'Brawlstars AI'
 URL = 'https://github.com/workofart/brawlstars-ai'
 EMAIL = 'hanxiangp@gmail.com'
 AUTHOR = 'Henry Pan'

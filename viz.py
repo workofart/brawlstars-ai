@@ -10,6 +10,8 @@ from matplotlib import pyplot as plt
 
 import time
 
+# To visualize the intermediary CNN layers for debugging purposes.
+
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 # config.log_device_placement = True

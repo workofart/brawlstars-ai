@@ -58,7 +58,7 @@ class Brawlstars():
         if isDone:
             # print('Restarting game after timestep: {}'.format(self.time_step))
             # Reset the game
-            w.find_window_wildcard("雷电模拟器")
+            w.find_window_wildcard("雷电模拟器") # Note: The android simulator of your choice
             w.set_foreground()
             PressKey(B)
             time.sleep(0.3)

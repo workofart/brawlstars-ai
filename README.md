@@ -1,5 +1,7 @@
 # BrawlStars AI Project
 
+## Brawlstars: https://supercell.com/en/games/brawlstars/
+
 ## __Note that this project has been discontinued due to the difficulty of keeping up with a dynamic online game and the inefficiency of training without a simulator.__
 
 [Blog Post 1](http://www.henrypan.com/blog/machine-learning/2019/04/20/Brawlstars-AI.html) and [Blog Post 2](http://www.henrypan.com/blog/reinforcement-learning/2019/04/25/Brawlstars-RL.html) recorded my journey.

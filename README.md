@@ -2,7 +2,18 @@
 
 ## Brawlstars: https://supercell.com/en/games/brawlstars/
 
-## __Note that this project has been discontinued due to the difficulty of keeping up with a dynamic online game and the inefficiency of training without a simulator.__
+## :warning: __Note__
+
+I'm no longer maintaining this project because several reasons:
+- Brawlstars client has been constantly updating, and it's difficult to keep up with a dynamic online game without access to their internal API (e.g. object detection would need to be updated constantly for new avatars/elements etc...).
+- Inefficiencies of training without a simulator
+
+This project was originally based on an old client version 16.176, but it's impossible to run it now when the latest version is 44.242 (as of 2022/08/20), because the game will validate the version at run-time and force you to update.
+
+Other ways this project might be helpful:
+- provide an example of how to apply computer vision and reinforcement learning in real world applications from scratch (you can read my blog post [[1](https://www.henrypan.com/blog/2019-04-20-Brawlstars-AI/), [2](https://www.henrypan.com/blog/2019-04-25-Brawlstars-RL/)] to follow along without actually running the project yourself)
+- provide an example of how to control an android simulator programmatically using Python
+- presents common pitfalls of computer vision and reinforcement learning in real life
 
 [Blog Post 1](https://www.henrypan.com/blog/2019-04-20-Brawlstars-AI/) and [Blog Post 2](https://www.henrypan.com/blog/2019-04-25-Brawlstars-RL/) recorded my journey.
 
